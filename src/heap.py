@@ -99,9 +99,9 @@ def merge(left: HeapNode[Ord], right: HeapNode[Ord]) -> HeapNode[Ord]:
         if left is Empty \
         else left \
         if right is Empty \
-        else InnerNode(left.value, left.left, merge(left.right, right)) \
+        else restore(InnerNode(left.value, left.left, merge(left.right, right))) \
         if left.value < right.value \
-        else InnerNode(right.value, right.left, merge(left, right.right))
+        else restore(InnerNode(right.value, right.left, merge(left, right.right)))
 
 
 def restore(n: HeapNode[Ord]) -> HeapNode[Ord]:
@@ -112,7 +112,9 @@ def restore(n: HeapNode[Ord]) -> HeapNode[Ord]:
     when n is an inner node (n is not Empty).
     """
     # FIXME: you need to implement this
-    ...
+    if n.right.rank > n.left.rank:
+        n.right, n.left = n.left, n.right
+    return n
 
 
 class Heap(Generic[Ord]):
